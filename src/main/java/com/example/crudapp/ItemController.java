@@ -1,7 +1,5 @@
-package com.example.crudapp.controller;
+package com.example.crudapp;
 
-import com.example.crudapp.model.Item;
-import com.example.crudapp.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +16,9 @@ public class ItemController {
     private ItemService itemService;
 
     @GetMapping("/getAllItems")
-    public ResponseEntity<List<Item>> getAllItems() {
+    public ResponseEntity<List<Item>> getAllItems(@RequestHeader("Auth") String authToken) {
+        itemService.validateAuthToken(authToken);
+
         List<Item> itemList = itemService.findAllItems();
 
         if (itemList.isEmpty()) {
@@ -29,7 +29,9 @@ public class ItemController {
     }
 
     @GetMapping("/getItem/{id}")
-    public ResponseEntity<Item> getItemById(@PathVariable Long id) {
+    public ResponseEntity<Item> getItemById(@PathVariable Long id, @RequestHeader("Auth") String authToken) {
+        itemService.validateAuthToken(authToken);
+
         Optional<Item> itemObj = itemService.findItemById(id);
 
         return itemObj.map(item -> new ResponseEntity<>(item, HttpStatus.OK))
@@ -37,14 +39,18 @@ public class ItemController {
     }
 
     @PostMapping("/addItem")
-    public ResponseEntity<Item> addItem(@RequestBody Item item) {
+    public ResponseEntity<Item> addItem(@RequestBody Item item, @RequestHeader("Auth") String authToken) {
+        itemService.validateAuthToken(authToken);
+
         Item newItem = itemService.saveItem(item);
 
         return new ResponseEntity<>(newItem, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/deleteItem/{id}")
-    public ResponseEntity<HttpStatus> deleteItem(@PathVariable Long id) {
+    public ResponseEntity<HttpStatus> deleteItem(@PathVariable Long id, @RequestHeader("Auth") String authToken) {
+        itemService.validateAuthToken(authToken);
+
         itemService.deleteItemById(id);
 
         return new ResponseEntity<>(HttpStatus.OK);

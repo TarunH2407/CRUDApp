@@ -1,4 +1,4 @@
-package com.example.crudapp.model;
+package com.example.crudapp;
 
 import lombok.*;
 

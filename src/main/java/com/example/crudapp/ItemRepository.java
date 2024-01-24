@@ -1,6 +1,6 @@
-package com.example.crudapp.repo;
+package com.example.crudapp;
 
-import com.example.crudapp.model.Item;
+import com.example.crudapp.Item;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
