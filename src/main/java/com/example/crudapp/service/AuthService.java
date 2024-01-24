@@ -1,5 +1,7 @@
-package com.example.crudapp;
+package com.example.crudapp.service;
 
+import com.example.crudapp.model.Auth;
+import com.example.crudapp.repo.AuthRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

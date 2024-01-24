@@ -1,7 +1,8 @@
-package com.example.crudapp;
+package com.example.crudapp.service;
 
-import com.example.crudapp.Item;
-import com.example.crudapp.ItemRepository;
+import com.example.crudapp.model.Item;
+import com.example.crudapp.repo.ItemRepository;
+import com.example.crudapp.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
