@@ -30,14 +30,17 @@ public class ItemController {
         return new ResponseEntity<>(itemList, HttpStatus.OK);
     }
 
-    @GetMapping("/getItem/{id}")
-    public ResponseEntity<Item> getItemById(@PathVariable Long id, @RequestHeader("Auth") String authToken) {
+    @GetMapping("/getItem/{type}")
+    public ResponseEntity<List<Item>> getItemByType(@PathVariable String type, @RequestHeader("Auth") String authToken) {
         itemService.validateAuthToken(authToken);
 
-        Optional<Item> itemObj = itemService.findItemById(id);
+        List<Item> itemList = itemService.findItemByType(type);
 
-        return itemObj.map(item -> new ResponseEntity<>(item, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        if (itemList.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+
+        return new ResponseEntity<>(itemList, HttpStatus.OK);
     }
 
     @PostMapping("/addItem")

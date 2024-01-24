@@ -31,8 +31,8 @@ public class ItemService {
         return itemRepository.findAll();
     }
 
-    public Optional<Item> findItemById(Long id) {
-        return itemRepository.findById(id);
+    public List<Item> findItemByType(String type) {
+        return itemRepository.findByType(type);
     }
 
     public Item saveItem(Item item) {
