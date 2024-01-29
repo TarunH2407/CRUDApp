@@ -1,5 +1,6 @@
 package com.example.crudapp.controller;
 
+import com.example.crudapp.exception.AuthCustomException;
 import com.example.crudapp.service.ItemService;
 import com.example.crudapp.model.Item;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,45 +20,65 @@ public class ItemController {
 
     @GetMapping("/getAllItems")
     public ResponseEntity<List<Item>> getAllItems(@RequestHeader("Auth") String authToken) {
-        itemService.validateAuthToken(authToken);
 
-        List<Item> itemList = itemService.findAllItems();
-
-        if (itemList.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        try{
+            itemService.validateAuthToken(authToken);
+            List<Item> itemList = itemService.findAllItems();
+            if (itemList.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            return new ResponseEntity<>(itemList, HttpStatus.OK);
+        } catch (AuthCustomException ae) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
 
-        return new ResponseEntity<>(itemList, HttpStatus.OK);
     }
 
     @GetMapping("/getItem/{type}")
     public ResponseEntity<List<Item>> getItemByType(@PathVariable String type, @RequestHeader("Auth") String authToken) {
-        itemService.validateAuthToken(authToken);
 
-        List<Item> itemList = itemService.findItemByType(type);
-
-        if (itemList.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        try{
+            itemService.validateAuthToken(authToken);
+            List<Item> itemList = itemService.findItemByType(type);
+            if (itemList.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            return new ResponseEntity<>(itemList, HttpStatus.OK);
+        } catch (AuthCustomException ae) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
 
-        return new ResponseEntity<>(itemList, HttpStatus.OK);
     }
 
     @PostMapping("/addItem")
     public ResponseEntity<Item> addItem(@RequestBody Item item, @RequestHeader("Auth") String authToken) {
-        itemService.validateAuthToken(authToken);
 
-        Item newItem = itemService.saveItem(item);
-
-        return new ResponseEntity<>(newItem, HttpStatus.CREATED);
+        try{
+            itemService.validateAuthToken(authToken);
+            Item newItem = itemService.saveItem(item);
+            return new ResponseEntity<>(newItem, HttpStatus.CREATED);
+        } catch (AuthCustomException ae) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @DeleteMapping("/deleteItem/{id}")
     public ResponseEntity<HttpStatus> deleteItem(@PathVariable Long id, @RequestHeader("Auth") String authToken) {
-        itemService.validateAuthToken(authToken);
 
-        itemService.deleteItemById(id);
-
-        return new ResponseEntity<>(HttpStatus.OK);
+        try{
+            itemService.validateAuthToken(authToken);
+            itemService.deleteItemById(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (AuthCustomException ae) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 }

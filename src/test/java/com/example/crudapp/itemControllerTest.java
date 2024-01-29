@@ -3,21 +3,16 @@ package com.example.crudapp;
 import com.example.crudapp.controller.ItemController;
 import com.example.crudapp.service.ItemService;
 import com.example.crudapp.model.Item;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
@@ -28,7 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(ItemController.class)
-public class ItemControllerTest {
+public class itemControllerTest {
 
     @MockBean
     private ItemService service;
